@@ -6,38 +6,7 @@ from typing import List
 from dominio.cliente import Cliente, PessoaFisica
 from dominio.conta import Conta
 from dominio.historico import Historico
-
-class ContaCorrente(Conta):
-    def __init__(self, numero, cliente, limite=500, limite_saques=3):
-        super().__init__(numero, cliente)
-        self._limite = limite
-        self._limite_saques = limite_saques
-
-    def sacar(self, valor):
-        nro_saques = len(
-            [t for t in self.historico.transacoes if t["tipo"] == Saque.__name__]
-        )
-
-        excedeu_limite = valor > self._limite
-        excedeu_saques = nro_saques >= self._limite_saques
-
-        if excedeu_limite:
-            print("\nO valor do saque excede o limite, a operação falhou!!!")
-
-        elif excedeu_saques:
-            print("\nNúmero máximo de saques excedido, a operação falhou!!!")
-
-        else:
-            return super().sacar(valor)
-
-        return False
-
-    def __str__(self):
-        return f"""\
-            Agência:\t{self.agencia}
-            C/C:\t\t{self.numero}
-            Titular:\t{self.cliente.nome}
-        """
+from operacoes.contaCorrente import ContaCorrente
 
 class Transacao(ABC):
     @property
