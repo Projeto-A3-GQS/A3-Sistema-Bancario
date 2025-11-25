@@ -4,68 +4,8 @@ from abc import ABC, abstractclassmethod, abstractproperty
 from datetime import datetime
 from typing import List
 from dominio.cliente import Cliente, PessoaFisica
-
-
-
-class Conta:
-    def __init__(self, numero, cliente):
-        self._cliente = cliente
-        self._numero = numero
-        self._saldo = 0
-        self._agencia = "0001"
-        self._historico = Historico()
-
-    @classmethod
-    def nova_conta(cls, cliente, numero):
-        return cls(numero, cliente)
-
-    def sacar(self, valor):
-        saldo = self.saldo
-        excedeu_saldo = valor > saldo
-
-        if excedeu_saldo:
-            print("\nSaldo insuficiente, a operação falhou!!!")
-
-        elif valor > 0:
-            self._saldo -= valor
-            print("\nSaque realizado com sucesso!!!")
-            return True
-
-        else:
-            print("\nValor informado é inválido, a operação falhou!!!")
-
-        return False
-
-    def depositar(self, valor):
-        if valor > 0:
-            self._saldo += valor
-            print("\nDepósito realizado com sucesso!!!")
-        else:
-            print("\nO valor informado é inválido, a operação falhou!!!")
-            return False
-
-        return True
-
-    @property
-    def saldo(self):
-        return self._saldo
-
-    @property
-    def numero(self):
-        return self._numero
-
-    @property
-    def agencia(self):
-        return self._agencia
-
-    @property
-    def cliente(self):
-        return self._cliente
-
-    @property
-    def historico(self):
-        return self._historico
-
+from dominio.conta import Conta
+from dominio.historico import Historico
 
 class ContaCorrente(Conta):
     def __init__(self, numero, cliente, limite=500, limite_saques=3):
@@ -98,25 +38,6 @@ class ContaCorrente(Conta):
             C/C:\t\t{self.numero}
             Titular:\t{self.cliente.nome}
         """
-
-
-class Historico:
-    def __init__(self):
-        self._transacoes = []
-
-    def adicionar_transacao(self, transacao):
-        self._transacoes.append(
-            {
-                "tipo": transacao.__class__.__name__,
-                "valor": transacao.valor,
-                "data": datetime.now().strftime("%d-%m-%Y %H:%M:%S"),
-            }
-        )
-
-    @property
-    def transacoes(self):
-        return self._transacoes
-
 
 class Transacao(ABC):
     @property
