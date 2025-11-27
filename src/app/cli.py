@@ -1,9 +1,7 @@
 from app.services import buscar_cliente_por_cpf, menu_acesso, selecionar_conta_cliente, criar_cliente, criar_conta, listar_contas
 from operacoes.deposito import Deposito
 from operacoes.saque import Saque
-
 #Refatorar operações e depois alterar o menu de acordo
-
 def depositar(clientes):
     cpf = input("Informe o CPF do cliente: ")
     cliente = buscar_cliente_por_cpf(cpf, clientes)
@@ -20,8 +18,6 @@ def depositar(clientes):
         return
 
     cliente.realizar_transacao(conta, transacao)
-
-
 def sacar(clientes):
     cpf = input("Informe o CPF do cliente: ")
     cliente = buscar_cliente_por_cpf(cpf, clientes)
