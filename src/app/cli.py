@@ -2,7 +2,7 @@ from app.services import buscar_cliente_por_cpf, menu_acesso, selecionar_conta_c
 from operacoes.deposito import Deposito
 from operacoes.saque import Saque
 #Refatorar operações e depois alterar o menu de acordo
-def depositar(clientes):
+def operacao_deposito(clientes):
     cpf = input("Informe o CPF do cliente: ")
     cliente = buscar_cliente_por_cpf(cpf, clientes)
 
@@ -18,7 +18,8 @@ def depositar(clientes):
         return
 
     cliente.realizar_transacao(conta, transacao)
-def sacar(clientes):
+
+def operacao_saque(clientes):
     cpf = input("Informe o CPF do cliente: ")
     cliente = buscar_cliente_por_cpf(cpf, clientes)
 
@@ -35,7 +36,7 @@ def sacar(clientes):
 
     cliente.realizar_transacao(conta, transacao)
 
-def exibir_extrato(clientes):
+def operacao_extrato(clientes):
     cpf = input("Informe o CPF do cliente: ")
     cliente = buscar_cliente_por_cpf(cpf, clientes)
 
@@ -46,17 +47,15 @@ def exibir_extrato(clientes):
     conta = selecionar_conta_cliente(cliente)
     if not conta:
         return
-
+    
     transacoes = conta.historico.transacoes
-    extrato = ""
 
     if not transacoes:
-        extrato = "Não foram realizadas movimentações."
+        print("Não foram realizadas movimentações.")
     else:
-        for t in transacoes:
-            extrato += f"\n{t['tipo']}:\n\tR$ {t['valor']:.2f}"
+        for transacao in transacoes:
+            print(f"{transacao['data']} - {transacao['tipo']}: R$ {transacao['valor']:.2f}")
 
-    print(extrato)
     print(f"\nSaldo:\n\tR$ {conta.saldo:.2f}")
 
 def main():
